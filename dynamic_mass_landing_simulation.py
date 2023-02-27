@@ -65,7 +65,8 @@ def display(rope_axises, vel_axises, rope_densities):
     print("[+] Rendering results... ")
 
     for i in range(len(rope_axises)):
-        plt.plot(rope_axises[i], vel_axises[i], label="Rope Density: " + str(rope_densities[i]) + " kg/m^3")
+        clr = '#%02x%02x%02x' % (50, 50+10*i, 255-i*5)
+        plt.plot(rope_axises[i], vel_axises[i], label="Rope Density: " + str(rope_densities[i]) + " kg/m^3", color=f'{clr}')
 
     plt.xlabel("Rope length (m)")
     plt.ylabel("Impact Velocity (ms^-1)")
