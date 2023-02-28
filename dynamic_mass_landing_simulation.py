@@ -15,7 +15,7 @@ M_nosecone = 0.3
 M_rocket = 1.5
 
 # prompt user
-if (len(sys.argv) > 1 and sys.argv[1] == "ask"):
+if ("--ask" in sys.argv):
     vi = float(input("[?] Initial velocity before touchdown: "))
     vf = float(input("[?] Desired final velocity: "))
     A_parachute = float(input("[?] Parachute area: "))
@@ -75,6 +75,18 @@ def display(rope_axises, vel_axises, rope_densities):
     plt.show()
 
 
+def display3D(rope_axises, vel_axises, rope_densities):
+    print("[+] Rendering 3D results... ")
+    fig = plt.figure()
+    graph3D = fig.add_subplot(projection='3d')
+
+    for i in range(len(rope_densities)):
+        clr = '#%02x%02x%02x' % (50, 50+10*i, 255-i*5)
+        graph3D.scatter(rope_axises[i], vel_axises[i], [rope_densities[i] for z in range(len(rope_axises[i]))], color=f'{clr}')
+
+    plt.show()
+
+
 
 def main():
     rope_axises = []
@@ -86,8 +98,10 @@ def main():
         vel_axises.append(vel_axis)
         rope_densities.append(rope_density)
 
-
-    display(rope_axises, vel_axises, rope_densities)
+    if ("--3D" in sys.argv):
+        display3D(rope_axises, vel_axises, rope_densities)
+    else:
+        display(rope_axises, vel_axises, rope_densities)
 
     print('\n')
     print("[+] Time needed to decelerate: ", time, "s")
