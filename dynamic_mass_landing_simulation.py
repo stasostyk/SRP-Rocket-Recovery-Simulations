@@ -6,7 +6,7 @@ from colour import Color
 GRAV = 9.807
 FREE_STREAM_DENSITY = 1.225
 DRAG_COEFFICIENT = 0.6
-dt = 0.001
+dt = 0.03
 
 # input variables
 vi = 20
@@ -23,6 +23,8 @@ if ("--ask" in sys.argv):
     M_nosecone = float(input("[?] Nosecone mass: "))
     M_rocket = float(input("[?] Rest of rocket mass (w/o propellant): "))
 
+if ("-dt" in sys.argv and len(sys.argv) > sys.argv.index("-dt")+1):
+    dt = float(sys.argv[sys.argv.index("-dt")+1])
 
 def getAcceleration(v_c, m_r):
     F_d = DRAG_COEFFICIENT * 0.5 * FREE_STREAM_DENSITY * (v_c ** 2) * A_parachute
@@ -49,6 +51,7 @@ def generateImpactCurve(rope_density):
     time_elapsed = 0
     vel_axis = []
     rope_axis = []
+    time_axis = []
 
     while (vel > vf and vel <= vi):
         time_elapsed += dt
@@ -57,9 +60,9 @@ def generateImpactCurve(rope_density):
 
         vel_axis.append(vel)
         rope_axis.append(rope_length)
-        # print("[+] At velocity " + str(vel))
+        time_axis.append(time_elapsed)
 
-    return rope_axis, vel_axis, time_elapsed, rope_density
+    return rope_axis, vel_axis, time_axis, rope_density
 
 
 def display(rope_axises, vel_axises, rope_densities, colours):
@@ -91,29 +94,46 @@ def display3D(rope_axises, vel_axises, rope_densities, colours):
     graph3D.set_zlabel("Density ($kgm^3$)")
     plt.show()
 
+def displayAgainstTime(rope_axises, vel_axises, time_axises, colours):
+    print("[+] Rendering 3D results... ")
+    fig = plt.figure()
+    graph3D = fig.add_subplot(projection='3d')
+
+    for i in range(len(time_axises)):
+        graph3D.scatter(rope_axises[i], vel_axises[i], time_axises[i], color=colours[i].rgb)
+
+    graph3D.set_title("Difference Between Parachute Rope Length for Recovery Graph")
+    graph3D.set_xlabel("Rope Length ($m$)")
+    graph3D.set_ylabel("Impact Velocity ($ms^-1$)")
+    graph3D.set_zlabel("Time ($s$)")
+    plt.show()
+
 
 
 def main():
     rope_axises = []
     vel_axises = []
     rope_densities = []
+    time_axises = []
     for i in range(5, 100, 5):
         rope_axis, vel_axis, time, rope_density = generateImpactCurve(i / 1000) # 000379
         rope_axises.append(rope_axis)
         vel_axises.append(vel_axis)
         rope_densities.append(rope_density)
+        time_axises.append(time)
 
 
     colours = list(Color("cyan").range_to(Color("blue"), len(rope_densities)))
 
     if ("--3D" in sys.argv):
         display3D(rope_axises, vel_axises, rope_densities, colours)
+    elif ("--3D-time" in sys.argv):
+        displayAgainstTime(rope_axises, vel_axises, time_axises, colours)
     else:
         display(rope_axises, vel_axises, rope_densities, colours)
 
     print('\n')
-    print("[+] Time needed to decelerate: ", time, "s")
-    print("[+] Length of chord needed: ", rope_axis[len(rope_axis)-1], "m")
+    print("[+] Done")
 
 
 if __name__ == "__main__":
