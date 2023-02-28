@@ -1,5 +1,6 @@
 import sys
 import matplotlib.pyplot as plt
+from colour import Color
 
 # CONSTANTS
 GRAV = 9.807
@@ -61,29 +62,33 @@ def generateImpactCurve(rope_density):
     return rope_axis, vel_axis, time_elapsed, rope_density
 
 
-def display(rope_axises, vel_axises, rope_densities):
+def display(rope_axises, vel_axises, rope_densities, colours):
     print("[+] Rendering results... ")
 
     for i in range(len(rope_axises)):
-        clr = '#%02x%02x%02x' % (50, 50+10*i, 255-i*5)
-        plt.plot(rope_axises[i], vel_axises[i], label="Rope Density: " + str(rope_densities[i]) + " kg/m^3", color=f'{clr}')
+        plt.plot(rope_axises[i], vel_axises[i], label="Rope Density: " + str(rope_densities[i]) + " kg/m^3", color=colours[i].rgb)
 
-    plt.xlabel("Rope length (m)")
-    plt.ylabel("Impact Velocity (ms^-1)")
+    plt.title("Difference Between Parachute Rope Length for Recovery Graph")
+    plt.xlabel("Rope length ($m$)")
+    plt.ylabel("Impact Velocity ($ms^-1$)")
     plt.title("Recovery Graph")
     plt.legend()
     plt.show()
 
 
-def display3D(rope_axises, vel_axises, rope_densities):
+
+def display3D(rope_axises, vel_axises, rope_densities, colours):
     print("[+] Rendering 3D results... ")
     fig = plt.figure()
     graph3D = fig.add_subplot(projection='3d')
 
     for i in range(len(rope_densities)):
-        clr = '#%02x%02x%02x' % (50, 50+10*i, 255-i*5)
-        graph3D.scatter(rope_axises[i], vel_axises[i], [rope_densities[i] for z in range(len(rope_axises[i]))], color=f'{clr}')
+        graph3D.scatter(rope_axises[i], vel_axises[i], [rope_densities[i] for z in range(len(rope_axises[i]))], color=colours[i].rgb)
 
+    graph3D.set_title("Difference Between Parachute Rope Length for Recovery Graph")
+    graph3D.set_xlabel("Rope Length ($m$)")
+    graph3D.set_ylabel("Impact Velocity ($ms^-1$)")
+    graph3D.set_zlabel("Density ($kgm^3$)")
     plt.show()
 
 
@@ -98,10 +103,13 @@ def main():
         vel_axises.append(vel_axis)
         rope_densities.append(rope_density)
 
+
+    colours = list(Color("cyan").range_to(Color("blue"), len(rope_densities)))
+
     if ("--3D" in sys.argv):
-        display3D(rope_axises, vel_axises, rope_densities)
+        display3D(rope_axises, vel_axises, rope_densities, colours)
     else:
-        display(rope_axises, vel_axises, rope_densities)
+        display(rope_axises, vel_axises, rope_densities, colours)
 
     print('\n')
     print("[+] Time needed to decelerate: ", time, "s")
