@@ -40,8 +40,14 @@ To render a 3D model instead.
 ```shell
 $ ... --3D-time
 ```
+To render a 3D model with the z-axis as time, and density denoted by colour.
 
 ```shell
 $ ... -dt 0.1 # use a time-step of 0.1 instead
 ```
+To edit the time-step. Warning: should be under 1s.
 
+Here is an example of timestep 0.1 versus 0.05:
+
+![Figure 1](Figure_4.png)
+![Figure 1](Figure_5.png)
