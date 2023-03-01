@@ -69,11 +69,11 @@ def display(rope_axises, vel_axises, rope_densities, colours):
     print("[+] Rendering results... ")
 
     for i in range(len(rope_axises)):
-        plt.plot(rope_axises[i], vel_axises[i], label="Rope Density: " + str(rope_densities[i]) + " kg/m^3", color=colours[i].rgb)
+        plt.plot(rope_axises[i], vel_axises[i], label="Rope Density: " + str(rope_densities[i]) + " $kgm^{-3}$", color=colours[i].rgb)
 
     plt.title("Difference Between Parachute Rope Length for Recovery Graph")
     plt.xlabel("Rope length ($m$)")
-    plt.ylabel("Impact Velocity ($ms^-1$)")
+    plt.ylabel("Impact Velocity ($ms^{-1}$)")
     plt.title("Recovery Graph")
     plt.legend()
     plt.show()
@@ -90,8 +90,8 @@ def display3D(rope_axises, vel_axises, rope_densities, colours):
 
     graph3D.set_title("Difference Between Parachute Rope Length for Recovery Graph")
     graph3D.set_xlabel("Rope Length ($m$)")
-    graph3D.set_ylabel("Impact Velocity ($ms^-1$)")
-    graph3D.set_zlabel("Density ($kgm^3$)")
+    graph3D.set_ylabel("Impact Velocity ($ms^{-1}$)")
+    graph3D.set_zlabel("Density ($kgm^{-3}$)")
     plt.show()
 
 def displayAgainstTime(rope_axises, vel_axises, time_axises, colours):
