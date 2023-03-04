@@ -1,5 +1,5 @@
 # SRP Rocket Recovery Simulations
-Simulations for single-parachute-dual-rope rocket recovery. 
+Simulations for single-parachute-dual-rope rocket recovery.
 
 ![Figure 1](Figure_2.png)
 
@@ -8,8 +8,8 @@ Plot the length of rope by which the main rocket body should extend past the nos
 
 ![Figure 1](Figure_3.png)
 
-## Rope-Mass-Negligable Simulation
-Similair, but mass of rope is negligable allowing the simulation to run significantly faster. However, some precision is lost.
+## Rope-Mass-Negligible Simulation
+Similar, but mass of rope is negligible allowing the simulation to run significantly faster. However, some precision is lost.
 
 ## How to run
 Run the following commands in your terminal:
@@ -41,6 +41,11 @@ To render a 3D model instead.
 $ ... --3D-time
 ```
 To render a 3D model with the z-axis as time, and density denoted by colour.
+
+```shell
+$ ... --isolate 0.05
+```
+To isolate a specific density and only display it (works in combination with all other features!).
 
 ```shell
 $ ... -dt 0.1 # use a time-step of 0.1 instead
