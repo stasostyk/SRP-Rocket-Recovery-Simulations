@@ -14,6 +14,7 @@ vf = 7
 A_parachute = 0.18
 M_nosecone = 0.3
 M_rocket = 1.5
+density = 0
 
 # prompt user
 if ("--ask" in sys.argv):
@@ -25,6 +26,9 @@ if ("--ask" in sys.argv):
 
 if ("-dt" in sys.argv and len(sys.argv) > sys.argv.index("-dt")+1):
     dt = float(sys.argv[sys.argv.index("-dt")+1])
+
+if ("-isolate" in sys.argv and len(sys.argv) > sys.argv.index("-isolate")+1):
+    density = float(sys.argv[sys.argv.index("-isolate")+1])
 
 def getAcceleration(v_c, m_r):
     F_d = DRAG_COEFFICIENT * 0.5 * FREE_STREAM_DENSITY * (v_c ** 2) * A_parachute
@@ -115,12 +119,20 @@ def main():
     vel_axises = []
     rope_densities = []
     time_axises = []
-    for i in range(5, 100, 5):
-        rope_axis, vel_axis, time, rope_density = generateImpactCurve(i / 1000) # 000379
+    if (density):
+        rope_axis, vel_axis, time, rope_density = generateImpactCurve(density)
         rope_axises.append(rope_axis)
         vel_axises.append(vel_axis)
         rope_densities.append(rope_density)
         time_axises.append(time)
+        
+    else:
+        for i in range(5, 100, 5):
+            rope_axis, vel_axis, time, rope_density = generateImpactCurve(i / 1000) # 000379
+            rope_axises.append(rope_axis)
+            vel_axises.append(vel_axis)
+            rope_densities.append(rope_density)
+            time_axises.append(time)
 
 
     colours = list(Color("cyan").range_to(Color("blue"), len(rope_densities)))
